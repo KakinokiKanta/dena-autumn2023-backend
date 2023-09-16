@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/shinbunbun/go-gin-template/router"
+	"github.com/shinbunbun/dena-autumn-backend/server/router"
 )
 
 func main() {
