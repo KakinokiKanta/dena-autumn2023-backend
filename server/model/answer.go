@@ -6,23 +6,27 @@ import (
 
 type Answer struct {
 	ID      string `gorm:"primary_key"`
-	Answer  string
+	Content  string
 	UserID  string
 	ThemeID string
 }
 
-func (Answer) GetAnswers(db *gorm.DB) []Answer {
-	var answers []Answer
-	db.Find(&answers)
-	return answers
+func GetAnswers(db *gorm.DB) (answers []Answer, err error) {
+	err = db.Find(&answers).Error
+	return
 }
 
-func (Answer) GetAnswersByUserID(db *gorm.DB, userID string) []Answer {
-	var answers []Answer
-	db.Where("user_id = ?", userID).Find(&answers)
-	return answers
+func GetAnswerByID(db *gorm.DB, id string) (answer Answer, err error) {
+	err = db.Where("id = ?", id).Find(&answer).Error
+	return
 }
 
-func (Answer) PutAnswer(db *gorm.DB, answer Answer) {
-	db.Create(&answer)
+func GetAnswersByUserID(db *gorm.DB, userID string) (answers []Answer, err error) {
+	err = db.Where("user_id = ?", userID).Find(&answers).Error
+	return
+}
+
+func PutAnswer(db *gorm.DB, answer Answer) (err error) {
+	err = db.Create(&answer).Error
+	return
 }

@@ -7,11 +7,12 @@ type Theme struct {
 	Name string
 }
 
-func (Theme) GetThemeByThemeID(db *gorm.DB, themeID string) (theme Theme, err error) {
+func GetThemeByID(db *gorm.DB, themeID string) (theme Theme, err error) {
 	err = db.Where("id = ?", themeID).First(&theme).Error
 	return
 }
 
-func (Theme) PutTheme(db *gorm.DB, theme Theme) {
-	db.Create(&theme)
+func PutTheme(db *gorm.DB, theme Theme) (err error) {
+	err = db.Create(&theme).Error
+	return
 }
