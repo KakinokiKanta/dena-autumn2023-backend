@@ -22,3 +22,7 @@ func (Answer) GetAnswersByUserID(db *gorm.DB, userID string) []Answer {
 	db.Where("user_id = ?", userID).Find(&answers)
 	return answers
 }
+
+func (Answer) PutAnswer(db *gorm.DB, answer Answer) {
+	db.Create(&answer)
+}
