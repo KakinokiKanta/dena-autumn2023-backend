@@ -9,10 +9,7 @@ import (
 )
 
 func AnswerGet(c *gin.Context) {
-	answerId, err := strconv.Atoi(c.Param("answer_id"))
-	if err != nil {
-		fmt.Errorf("Cannot get user id")
-	}
+	answerId, _ := strconv.Atoi(c.Param("answer_id"))
 	fmt.Print(answerId)
 }
 

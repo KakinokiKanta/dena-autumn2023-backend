@@ -9,10 +9,6 @@ import (
 )
 
 func ThemeGet(c *gin.Context) {
-	themeId, err := strconv.Atoi(c.Param("theme_id"))
-	if err != nil {
-		fmt.Errorf("Cannot get theme id")
-		return
-	}
+	themeId, _ := strconv.Atoi(c.Param("theme_id"))
 	fmt.Println(themeId)
 }
