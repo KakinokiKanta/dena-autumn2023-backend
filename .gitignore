@@ -2,3 +2,4 @@ docker/*
 key.json
 .terraform
 terraform.tfstate
+.env
