@@ -20,6 +20,7 @@ func GetUsers(db *gorm.DB) (users []User, err error) {
 	return 
 }
 
-func (user User) PutUser(db *gorm.DB) {
-	db.Create(&user)
+func PutUser(db *gorm.DB, user User) (err error) {
+	err = db.Create(&user).Error
+	return err
 }
