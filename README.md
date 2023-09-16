@@ -1,3 +1,13 @@
 # dena-autumn-backend
 
-ハッカソンとかでサーバサイドを爆速開発するためのテンプレート
+## DBの起動
+
+```shell
+docker compose up
+```
+
+## DBのmigration
+
+```shell
+go run migration/main.go
+```
