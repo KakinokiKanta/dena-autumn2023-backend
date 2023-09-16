@@ -13,17 +13,18 @@ func AnswerGet(c *gin.Context) {
 	if err != nil {
 		fmt.Errorf("Cannot get user id")
 	}
+	fmt.Print(answerId)
 }
 
 func AnswerPost(c *gin.Context) {
-	title := c.PostForm("user_id")
-	themeId := c.PostForm("theme_id")
-	content := c.PostForm("content")
+	// title := c.PostForm("user_id")
+	// themeId := c.PostForm("theme_id")
+	// content := c.PostForm("content")
 }
 
 func AnswersGetByUserId(c *gin.Context) {
-	userId, err := strconv.Atoi(c.Param("user_id"))
-	if err != nil {
-		fmt.Errorf("Cannot get user id")
-	}
+	db := model.GetDB()
+	userId := c.Param("user_id")
+	user := model.Answer.GetAnswersByUserID(model.Answer{}, db, userId)
+	c.JSON(200, user)
 }

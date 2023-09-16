@@ -1,6 +1,8 @@
 package model
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type User struct {
 	ID    string `gorm:"primary_key"`
@@ -8,11 +10,16 @@ type User struct {
 	IsNew bool
 }
 
-func (User) GetUserByUserID(db *gorm.DB, userID string) (user User, err error) {
+func GetUserByUserID(db *gorm.DB, userID string) (user User, err error) {
 	err = db.Where("id = ?", userID).First(&user).Error
 	return
 }
 
-func (User) PutUser(db *gorm.DB, user User) {
+func GetUsers(db *gorm.DB) (users []User, err error) {
+	err = db.Find(&users).Error
+	return 
+}
+
+func (user User) PutUser(db *gorm.DB) {
 	db.Create(&user)
 }

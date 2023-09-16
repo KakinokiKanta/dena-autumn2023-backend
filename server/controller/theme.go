@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/shinbunbun/dena-autumn-backend/server/model"
+	// "github.com/shinbunbun/dena-autumn-backend/server/model"
 )
 
 func ThemeGet(c *gin.Context) {
@@ -14,4 +14,5 @@ func ThemeGet(c *gin.Context) {
 		fmt.Errorf("Cannot get theme id")
 		return
 	}
+	fmt.Println(themeId)
 }
