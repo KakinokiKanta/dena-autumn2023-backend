@@ -14,5 +14,6 @@ mkShell {
     godef
     golint
     golangci-lint
+    terraform
   ];
 }
