@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +27,7 @@ func UsersGet(c *gin.Context) {
 	users, err:= model.GetUsers(db)
 
 	if err != nil {
-		c.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(200, users)
@@ -38,13 +39,13 @@ func UserPost(c *gin.Context) {
 	name := c.PostForm("name")
 	isNew, err := strconv.ParseBool(c.PostForm("is_new"))
 	if err != nil {
-		c.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	user := model.User{ID: userId, Name: name, IsNew: isNew}
 	err = model.PutUser(db, user)
 	if err != nil {
-		c.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(201, "User Created")

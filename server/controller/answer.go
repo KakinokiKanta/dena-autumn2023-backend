@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/shinbunbun/dena-autumn-backend/server/model"
 )
@@ -10,7 +12,7 @@ func AnswerGet(c *gin.Context) {
 	answerId := c.Param("answer_id")
 	answer, err := model.GetAnswerByID(db, answerId)
 	if err != nil {
-		c.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(200, answer)
@@ -20,7 +22,7 @@ func AnswersGet(c *gin.Context) {
 	db := model.GetDB()
 	answers, err := model.GetAnswers(db)
 	if err != nil {
-		c.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(200, answers)
@@ -31,7 +33,7 @@ func AnswersGetByUserId(c *gin.Context) {
 	userId := c.Param("user_id")
 	answers, err := model.GetAnswersByUserID(db, userId)
 	if err != nil {
-		c.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(200, answers)
@@ -45,7 +47,7 @@ func AnswerPost(c *gin.Context) {
 	answer := model.Answer{UserID: userId, ThemeID: themeId, Content: content}
 	err := model.PutAnswer(db, answer)
 	if err != nil {
-		c.Error(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(201, "Answer Created")
