@@ -4,6 +4,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/shinbunbun/dena-autumn-backend/server/controller"
+	// "github.com/shinbunbun/dena-autumn-backend/server/model"
 )
 
 func Route() *gin.Engine {
@@ -13,5 +14,15 @@ func Route() *gin.Engine {
 
 	r.GET("/ping", controller.PingGet)
 	r.POST("/ping", controller.PingPost)
+
+	r.GET("/users/:user_id", controller.UserGet)
+	r.GET("/users", controller.UsersGet)
+	r.POST("/user", controller.UserPost)
+
+	r.GET("/answers", controller.AnswersGetByUserId)
+	r.GET("/answer", controller.AnswerGet)
+	r.POST("/answer", controller.AnswerPost)
+	
+	r.GET("/theme/:theme_id", controller.ThemeGet)
 	return r
 }
