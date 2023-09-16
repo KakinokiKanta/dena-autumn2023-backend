@@ -3,7 +3,7 @@ package router
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/shinbunbun/go-gin-template/controller"
+	"github.com/shinbunbun/dena-autumn-backend/server/controller"
 )
 
 func Route() *gin.Engine {

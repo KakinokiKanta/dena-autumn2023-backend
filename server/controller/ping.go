@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/shinbunbun/go-gin-template/model"
+	"github.com/shinbunbun/dena-autumn-backend/server/model"
 )
 
 func PingGet(c *gin.Context) {
