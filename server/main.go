@@ -8,7 +8,7 @@ import (
 
 func main() {
 	r := router.Route()
-	err := r.Run("localhost:8081")
+	err := r.Run("0.0.0.0:8081")
 	if err != nil {
 		fmt.Printf("%#v\n", err)
 	}
