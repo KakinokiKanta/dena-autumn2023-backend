@@ -20,10 +20,13 @@ func ThemeGet(c *gin.Context) {
 
 func ThemePost(c *gin.Context) {
 	db := model.GetDB()
-	themeId := c.PostForm("theme_id")
-	name := c.PostForm("name")
-	theme := model.Theme{ID: themeId, Name: name}
-	err := model.PutTheme(db, theme)
+	var jsonTheme model.Theme
+	if err := c.ShouldBindJSON(&jsonTheme); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := model.PutTheme(db, jsonTheme)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

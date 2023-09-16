@@ -41,11 +41,13 @@ func AnswersGetByUserId(c *gin.Context) {
 
 func AnswerPost(c *gin.Context) {
 	db := model.GetDB()
-	userId := c.PostForm("user_id")
-	themeId := c.PostForm("theme_id")
-	content := c.PostForm("content")
-	answer := model.Answer{UserID: userId, ThemeID: themeId, Content: content}
-	err := model.PutAnswer(db, answer)
+	var jsonAnswer model.Answer
+	if err := c.ShouldBindJSON(&jsonAnswer); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := model.PutAnswer(db, jsonAnswer)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

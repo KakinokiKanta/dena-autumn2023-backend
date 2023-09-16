@@ -3,7 +3,6 @@ package controller
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/shinbunbun/dena-autumn-backend/server/model"
@@ -35,15 +34,13 @@ func UsersGet(c *gin.Context) {
 
 func UserPost(c *gin.Context) {
 	db := model.GetDB()
-	userId := c.PostForm("user_id")
-	name := c.PostForm("name")
-	isNew, err := strconv.ParseBool(c.PostForm("is_new"))
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	var jsonUser model.User
+	if err := c.ShouldBindJSON(&jsonUser); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	user := model.User{ID: userId, Name: name, IsNew: isNew}
-	err = model.PutUser(db, user)
+
+	err := model.PutUser(db, jsonUser)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
