@@ -20,18 +20,32 @@ func AnswerGet(c *gin.Context) {
 
 func AnswersGet(c *gin.Context) {
 	db := model.GetDB()
-	answers, err := model.GetAnswers(db)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	// user_idがあるならuser_idで検索
+	userId := c.Query("user_id")
+	if userId != "" {
+		answers, err := model.GetAnswersByUserID(db, userId)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, answers)
 		return
 	}
-	c.JSON(200, answers)
-}
 
-func AnswersGetByUserId(c *gin.Context) {
-	db := model.GetDB()
-	userId := c.Param("user_id")
-	answers, err := model.GetAnswersByUserID(db, userId)
+	// user_nameがあるならuser_nameで検索
+	userName := c.Query("user_name")
+	if userName != "" {
+		answers, err := model.GetAnswersByUserName(db, userName)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, answers)
+		return
+	}
+
+	// クエリパラメータがない場合は、全検索
+	answers, err := model.GetAnswers(db)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

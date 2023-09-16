@@ -18,7 +18,6 @@ func Route() *gin.Engine {
 	r.GET("/users", controller.UsersGet)
 	r.POST("/user", controller.UserPost)
 
-	r.GET("/answers/:user_id", controller.AnswersGetByUserId)
 	r.GET("/answer", controller.AnswerGet)
 	r.GET("/answers", controller.AnswersGet)
 	r.POST("/answer", controller.AnswerPost)
