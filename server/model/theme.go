@@ -11,3 +11,7 @@ func (Theme) GetThemeByThemeID(db *gorm.DB, themeID string) (theme Theme, err er
 	err = db.Where("id = ?", themeID).First(&theme).Error
 	return
 }
+
+func (Theme) PutTheme(db *gorm.DB, theme Theme) {
+	db.Create(&theme)
+}
