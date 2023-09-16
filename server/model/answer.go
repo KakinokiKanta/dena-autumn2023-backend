@@ -1,6 +1,8 @@
 package model
 
 import (
+	"fmt"
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -23,6 +25,16 @@ func GetAnswerByID(db *gorm.DB, id string) (answer Answer, err error) {
 
 func GetAnswersByUserID(db *gorm.DB, userID string) (answers []Answer, err error) {
 	err = db.Where("user_id = ?", userID).Find(&answers).Error
+	return
+}
+
+func GetAnswersByUserName(db *gorm.DB, name string) (answers []Answer, err error) {
+	user := User{}
+	err = db.Where("name = ?", name).Find(&user).Error
+	if err != nil {
+		return nil, fmt.Errorf("Cannot get user by user name")
+	}
+	err = db.Where("user_id = ?", user.ID).Find(&answers).Error
 	return
 }
 
