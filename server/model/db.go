@@ -17,7 +17,7 @@ func GetDB() *gorm.DB {
 			pass                   = os.Getenv("DB_PASS")
 			instanceConnectionName = os.Getenv("INSTANCE_CONNECTION_NAME")
 			dbName                 = os.Getenv("DB_NAME")
-			socketDir              = "cloudsql"
+			socketDir              = "/cloudsql"
 		)
 		dns = fmt.Sprintf("%s:%s@unix(%s/%s)/%s?parseTime=true&charset=utf8", user, pass, socketDir, instanceConnectionName, dbName)
 	} else {
