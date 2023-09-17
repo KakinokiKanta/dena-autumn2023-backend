@@ -35,7 +35,7 @@ func UsersGet(c *gin.Context) {
 	defer db.Close()
 }
 
-func UserPost(c *gin.Context) {
+func Signup(c *gin.Context) {
 	db := model.GetDB()
 	var jsonUser model.User
 	if err := c.ShouldBindJSON(&jsonUser); err != nil {
@@ -44,12 +44,12 @@ func UserPost(c *gin.Context) {
 		return
 	}
 
-	err := model.PutUser(db, jsonUser)
+	err := model.Signup(db, jsonUser)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		defer db.Close()
 		return
 	}
-	c.JSON(201, "User Created")
+	c.JSON(201, "User Sigup Succeeded")
 	defer db.Close()
 }
