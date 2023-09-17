@@ -19,10 +19,10 @@ func Route() *gin.Engine {
 
 	r.POST("/signup", controller.Signup)
 
-	r.GET("/answer", controller.AnswerGet)
+	r.GET("/answer/:answer_id", controller.AnswerGet)
 	r.GET("/answers", controller.AnswersGet)
 	r.POST("/answer", controller.AnswerPost)
-	
+
 	r.GET("/theme/:theme_id", controller.ThemeGet)
 	r.POST("/theme", controller.ThemePost)
 	return r
