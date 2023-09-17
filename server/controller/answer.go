@@ -13,9 +13,12 @@ func AnswerGet(c *gin.Context) {
 	answer, err := model.GetAnswerByID(db, answerId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		defer db.Close()
 		return
 	}
 	c.JSON(200, answer)
+
+	defer db.Close()
 }
 
 func AnswersGet(c *gin.Context) {
@@ -26,9 +29,11 @@ func AnswersGet(c *gin.Context) {
 		answers, err := model.GetAnswersByUserID(db, userId)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			defer db.Close()
 			return
 		}
 		c.JSON(200, answers)
+		defer db.Close()
 		return
 	}
 
@@ -38,9 +43,11 @@ func AnswersGet(c *gin.Context) {
 		answers, err := model.GetAnswersByUserName(db, userName)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			defer db.Close()
 			return
 		}
 		c.JSON(200, answers)
+		defer db.Close()
 		return
 	}
 
@@ -48,9 +55,11 @@ func AnswersGet(c *gin.Context) {
 	answers, err := model.GetAnswers(db)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		defer db.Close()
 		return
 	}
 	c.JSON(200, answers)
+	defer db.Close()
 }
 
 func AnswerPost(c *gin.Context) {
@@ -58,13 +67,16 @@ func AnswerPost(c *gin.Context) {
 	var jsonAnswer model.Answer
 	if err := c.ShouldBindJSON(&jsonAnswer); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		defer db.Close()
 		return
 	}
 
 	err := model.PutAnswer(db, jsonAnswer)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		defer db.Close()
 		return
 	}
 	c.JSON(201, "Answer Created")
+	defer db.Close()
 }
