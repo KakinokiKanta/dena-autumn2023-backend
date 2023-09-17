@@ -16,6 +16,14 @@ type Answer struct {
 	ThemeID string `json:"theme_id"`
 }
 
+type AnswerWithUserName struct {
+	ID      string `json:"id" gorm:"primary_key"`
+	Content  string `json:"content"`
+	UserID  string `json:"user_id"`
+	UserName string `json:"user_name"`
+	ThemeID string `json:"theme_id"`
+}
+
 func GetAnswers(db *gorm.DB) (answers []Answer, err error) {
 	err = db.Find(&answers).Error
 	return
@@ -48,6 +56,22 @@ func PutAnswer(db *gorm.DB, answer Answer) (err error) {
 	if answer.ID == "" {
 		answer.ID = id.String()
 	}
+	err = db.Create(&answer).Error
+	return
+}
+
+func PutAnswerByUserName(db *gorm.DB, answerWithUserName AnswerWithUserName) (err error) {
+	t := time.Now()
+	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
+	id := ulid.MustNew(ulid.Timestamp(t), entropy)
+	if answerWithUserName.ID == "" {
+		answerWithUserName.ID = id.String()
+	}
+	user, err := GetUserByUserName(db, answerWithUserName.UserName)
+	if err != nil {
+		return
+	}
+	answer := Answer{ID: answerWithUserName.ID, Content: answerWithUserName.Content, UserID: user.ID, ThemeID: answerWithUserName.ThemeID}
 	err = db.Create(&answer).Error
 	return
 }
