@@ -43,8 +43,8 @@ func GetAnswersByUserName(db *gorm.DB, name string) (answers []Answer, err error
 
 func PutAnswer(db *gorm.DB, answer Answer) (err error) {
 	t := time.Now()
-  entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
-  id := ulid.MustNew(ulid.Timestamp(t), entropy)
+	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
+	id := ulid.MustNew(ulid.Timestamp(t), entropy)
 	if answer.ID == "" {
 		answer.ID = id.String()
 	}

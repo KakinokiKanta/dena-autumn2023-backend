@@ -25,8 +25,8 @@ func GetUsers(db *gorm.DB) (users []User, err error) {
 
 func Signup(db *gorm.DB, user User) (err error) {
 	t := time.Now()
-  entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
-  id := ulid.MustNew(ulid.Timestamp(t), entropy)
+	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
+	id := ulid.MustNew(ulid.Timestamp(t), entropy)
 	if user.ID == "" {
 		user.ID = id.String()
 	}

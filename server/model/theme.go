@@ -20,8 +20,8 @@ func GetThemeByID(db *gorm.DB, themeID string) (theme Theme, err error) {
 
 func PutTheme(db *gorm.DB, theme Theme) (err error) {
 	t := time.Now()
-  entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
-  id := ulid.MustNew(ulid.Timestamp(t), entropy)
+	entropy := ulid.Monotonic(rand.New(rand.NewSource(t.UnixNano())), 0)
+	id := ulid.MustNew(ulid.Timestamp(t), entropy)
 	if theme.ID == "" {
 		theme.ID = id.String()
 	}
