@@ -9,8 +9,8 @@ import (
 )
 
 type Theme struct {
-	ID   string `gorm:"primary_key"`
-	Name string
+	ID   string `json:"id" gorm:"primary_key"`
+	Name string `json:"name"`
 }
 
 func GetThemeByID(db *gorm.DB, themeID string) (theme Theme, err error) {

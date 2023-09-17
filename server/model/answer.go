@@ -10,10 +10,10 @@ import (
 )
 
 type Answer struct {
-	ID      string `gorm:"primary_key"`
-	Content  string
-	UserID  string
-	ThemeID string
+	ID      string `json:"id" gorm:"primary_key"`
+	Content  string `json:"content"`
+	UserID  string `json:"user_id"`
+	ThemeID string `json:"theme_id"`
 }
 
 func GetAnswers(db *gorm.DB) (answers []Answer, err error) {
