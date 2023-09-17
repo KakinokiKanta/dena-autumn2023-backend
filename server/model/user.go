@@ -8,7 +8,7 @@ import (
 )
 
 type User struct {
-	ID    string `gorm:"primary_key;type:string;default:uuid_generate_v4()"`
+	ID    string `gorm:"primary_key"`
 	Name  string
 	IsNew bool `json:"is_new"`
 }
