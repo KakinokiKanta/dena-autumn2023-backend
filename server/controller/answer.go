@@ -64,19 +64,36 @@ func AnswersGet(c *gin.Context) {
 
 func AnswerPost(c *gin.Context) {
 	db := model.GetDB()
-	var jsonAnswer model.Answer
-	if err := c.ShouldBindJSON(&jsonAnswer); err != nil {
+	var jsonAnswerWithUserName model.AnswerWithUserName
+	if err := c.ShouldBindJSON(&jsonAnswerWithUserName); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		defer db.Close()
 		return
 	}
 
-	err := model.PutAnswer(db, jsonAnswer)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	// Post時にリクエストにuser_nameが含まれている時
+	userName := jsonAnswerWithUserName.UserName
+	if userName != "" {
+		err := model.PutAnswerByUserName(db, jsonAnswerWithUserName)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			defer db.Close()
+			return
+		}
+		c.JSON(201, "Answer Created")
 		defer db.Close()
 		return
+	} else {
+		jsonAnswer := model.Answer{
+			ID: jsonAnswerWithUserName.ID, Content: jsonAnswerWithUserName.Content, UserID: jsonAnswerWithUserName.UserID, ThemeID: jsonAnswerWithUserName.ThemeID,
+		}
+		err := model.PutAnswer(db, jsonAnswer)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			defer db.Close()
+			return
+		}
+		c.JSON(201, "Answer Created")
+		defer db.Close()
 	}
-	c.JSON(201, "Answer Created")
-	defer db.Close()
 }

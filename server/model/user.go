@@ -3,6 +3,7 @@ package model
 import (
 	"math/rand"
 	"time"
+
 	"github.com/jinzhu/gorm"
 	"github.com/oklog/ulid"
 )
@@ -15,6 +16,11 @@ type User struct {
 
 func GetUserByUserID(db *gorm.DB, userID string) (user User, err error) {
 	err = db.Where("id = ?", userID).First(&user).Error
+	return
+}
+
+func GetUserByUserName(db *gorm.DB, userName string) (user User, err error) {
+	err = db.Where("name = ?", userName).First(&user).Error
 	return
 }
 
