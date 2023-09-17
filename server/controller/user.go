@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,9 +14,11 @@ func UserGet(c *gin.Context) {
 	user, err:= model.GetUserByUserID(db, userId)
 
 	if err != nil {
-		fmt.Println("Cannot get User")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		defer db.Close()
 	}
 	c.JSON(200, user)
+	defer db.Close()
 }
 
 func UsersGet(c *gin.Context) {
@@ -27,9 +28,11 @@ func UsersGet(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		defer db.Close()
 		return
 	}
 	c.JSON(200, users)
+	defer db.Close()
 }
 
 func UserPost(c *gin.Context) {
@@ -37,13 +40,16 @@ func UserPost(c *gin.Context) {
 	var jsonUser model.User
 	if err := c.ShouldBindJSON(&jsonUser); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		defer db.Close()
 		return
 	}
 
 	err := model.PutUser(db, jsonUser)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		defer db.Close()
 		return
 	}
 	c.JSON(201, "User Created")
+	defer db.Close()
 }

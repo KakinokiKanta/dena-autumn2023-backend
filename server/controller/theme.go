@@ -13,9 +13,11 @@ func ThemeGet(c *gin.Context) {
 	theme, err := model.GetThemeByID(db, themeId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		defer db.Close()
 		return
 	}
 	c.JSON(200, theme)
+	defer db.Close()
 }
 
 func ThemePost(c *gin.Context) {
@@ -23,13 +25,16 @@ func ThemePost(c *gin.Context) {
 	var jsonTheme model.Theme
 	if err := c.ShouldBindJSON(&jsonTheme); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		defer db.Close()
 		return
 	}
 
 	err := model.PutTheme(db, jsonTheme)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		defer db.Close()
 		return
 	}
 	c.JSON(201, "Theme Created")
+	defer db.Close()
 }
